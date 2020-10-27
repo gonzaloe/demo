@@ -85,7 +85,7 @@ public class UserController {
 
         User user = result.get();
         userRepository.delete(user);
-        logger.info("user with email {} got deleted", user.getEmail());
+        logger.info("user with email {} successfully deleted", user.getEmail());
 
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
