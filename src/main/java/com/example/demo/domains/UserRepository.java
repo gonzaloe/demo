@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, String> {
 
     List<User> findAllByUsernameStartsWithOrderByUsername(String prefix);
+    List<User> findAllByUsernameEndsWithOrderByUsername(String suffix);
 }
