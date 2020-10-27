@@ -80,7 +80,7 @@ public class UserController {
 
         if (!result.isPresent()) {
             logger.error("user with email {} not found in database", email);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new NotFoundError());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BadRequestError());
         }
 
         User user = result.get();
