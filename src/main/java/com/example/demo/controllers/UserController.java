@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,10 +49,17 @@ public class UserController {
     }
 
     @GetMapping(value = "/users")
-    public ResponseEntity<Object> listUsers(@RequestParam String prefix) {
-        List<User> result = userRepository.findAllByUsernameStartsWithOrderByUsername(prefix);
+    public ResponseEntity<Object> listUsers(@RequestParam String prefix, @RequestParam String suffix) {
+        List<User> result;
+        if (prefix != null) {
+            result = userRepository.findAllByUsernameStartsWithOrderByUsername(prefix);
+        } else if (suffix != null) {
+            result = userRepository.findAllByUsernameEndsWithOrderByUsername(suffix);
+        } else {
+            result = new ArrayList<>();
+        }
 
-        logger.info("users found: {} and elio se la come", result);
+        logger.info("users found: {}", result);
 
         return ResponseEntity.ok(result);
     }
@@ -85,7 +93,7 @@ public class UserController {
 
         User user = result.get();
         userRepository.delete(user);
-        logger.info("user with email {} got deleted", user.getEmail());
+        logger.info("user with email {} successfully deleted", user.getEmail());
 
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
